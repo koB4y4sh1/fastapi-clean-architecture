@@ -1,0 +1,155 @@
+openapi: 3.1.0
+info:
+  title: My FastAPI App
+  description: このAPIは、ユーザー管理を行うためのAPIです。
+  version: 1.0.0
+servers:
+- url: http://localhost:8000
+  description: Local dev
+- url: https://api.example-dev.com
+  description: Testing
+- url: https://api.example.com
+  description: Production
+paths:
+  /api/users:
+    get:
+      tags:
+      - users
+      summary: ユーザー一覧の取得
+      description: '登録されているすべてのユーザーの情報を取得します。
+
+
+        idが指定された場合、そのユーザーの情報を返します。'
+      operationId: get_users_api_users_get
+      parameters:
+      - name: id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 0
+          - type: 'null'
+          title: ユーザーID
+          description: ユーザーIDでの検索
+        description: ユーザーIDでの検索
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+                title: Response Get Users Api Users Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - users
+      summary: ユーザー登録
+      description: 新しいユーザーを登録します。Bearerトークンが必要です。
+      operationId: post_user_api_users_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserCreateRequest:
+      properties:
+        name:
+          type: string
+          title: 名前
+          description: ユーザーのフルネーム
+        email:
+          type: string
+          format: email
+          title: メールアドレス
+          description: ユーザーのメールアドレス
+      type: object
+      required:
+      - name
+      - email
+      title: UserCreateRequest
+    UserResponse:
+      properties:
+        id:
+          type: integer
+          title: Id
+          description: ユーザーID
+          example: 1
+        name:
+          type: string
+          title: Name
+          description: ユーザー名
+          example: 山田 太郎
+        email:
+          type: string
+          title: Email
+          description: ユーザーのメールアドレス
+          example: taro@example.com
+      type: object
+      required:
+      - id
+      - name
+      - email
+      title: UserResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 認証後にMSALから取得できるGraphAPI認証用アクセストークン
+security:
+- bearerAuth: []
