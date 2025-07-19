@@ -1,8 +1,12 @@
 
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# load_dotenv()
 from config import settings
-from src.adapter.api import api_router
+from src.urls import api_router
 from src.utils.exception_handlers import register_exception_handlers
 from src.utils.middleware.auth import AuthMiddleware
 from src.utils.middleware.logging import LoggingMiddleware
@@ -35,6 +39,10 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
 
     return app
+
+print(os.getenv("AZURE_OPENAI_API_KEY"))  # 環境変数の読み込み
+print(os.getenv("AZURE_OPENAI_ENDPOINT"))  # 環境変数の読み込み
+print(os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"))  # 環境変数の読み込み
 
 app = create_app()
 

@@ -33,7 +33,7 @@ def custom_openapi(app: FastAPI):
 
 if __name__ == "__main__":
     app = create_app()
-    output_path = "docs/openapi.yaml"
+    output_path = "../docs/openapi.yaml"
     app.openapi = lambda: custom_openapi(app)
     save_openapi_spec(app, output_path)
     print(f"OpenAPI spec saved to {output_path}")

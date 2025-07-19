@@ -1,0 +1,18 @@
+
+plugins:
+    - name: Menu
+      type: MCPStdioPlugin
+      description: Menu plugin, for details about the menu, call this plugin.
+      path: menu_agent_server.py
+    - name: Booking
+      type: MCPStdioPlugin
+      description: Restaurant booking plugin, for making reservations at restaurants, call this plugin.
+      path: restaurant_booking_agent_server.py
+    - name: Calculation
+      type: MCPStdioPlugin
+      description: Numerical calculation plugin, for numerical calculation for addition and multiplication, call this plugin.
+      path: math_agent_server.py
+    - name: Travel
+      type: MCPStdioPlugin
+      description: Travel plugin, for information about travel destinations, call this plugin.
+      path: travel_agent_server.py

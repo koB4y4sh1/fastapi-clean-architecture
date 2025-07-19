@@ -11,63 +11,29 @@ servers:
 - url: https://api.example.com
   description: Production
 paths:
-  /api/users:
-    get:
-      tags:
-      - users
-      summary: ユーザー一覧の取得
-      description: '登録されているすべてのユーザーの情報を取得します。
-
-
-        idが指定された場合、そのユーザーの情報を返します。'
-      operationId: get_users_api_users_get
-      parameters:
-      - name: id
-        in: query
-        required: false
-        schema:
-          anyOf:
-          - type: integer
-            minimum: 0
-          - type: 'null'
-          title: ユーザーID
-          description: ユーザーIDでの検索
-        description: ユーザーIDでの検索
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserResponse'
-                title: Response Get Users Api Users Get
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
+  /api/chat:
     post:
       tags:
-      - users
-      summary: ユーザー登録
-      description: 新しいユーザーを登録します。Bearerトークンが必要です。
-      operationId: post_user_api_users_post
+      - Agent
+      summary: AIへの質問送信
+      description: "AIに質問を送信し、回答を受け取ります。 \n\n質問内容はChatRequestモデルで指定します。"
+      operationId: post_chat_api_chat_post
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreateRequest'
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse'
+                items:
+                  $ref: '#/components/schemas/ChatResponse'
+                type: array
+                title: Response Post Chat Api Chat Post
         '422':
           description: Validation Error
           content:
@@ -76,6 +42,36 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ChatRequest:
+      properties:
+        question:
+          type: string
+          title: Question
+          description: 質問内容
+      type: object
+      required:
+      - question
+      title: ChatRequest
+      description: 'エージェントへの入力データを表現するモデル。
+
+        question: ユーザーからの質問内容を表現します。'
+    ChatResponse:
+      properties:
+        question:
+          type: string
+          title: Question
+          description: 質問内容
+        answer:
+          type: string
+          title: Answer
+          description: 回答内容
+      type: object
+      required:
+      - question
+      title: ChatResponse
+      description: 'エージェントへの入力データを表現するモデル。
+
+        question: ユーザーからの質問内容を表現します。'
     HTTPValidationError:
       properties:
         detail:
@@ -85,45 +81,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    UserCreateRequest:
-      properties:
-        name:
-          type: string
-          title: 名前
-          description: ユーザーのフルネーム
-        email:
-          type: string
-          format: email
-          title: メールアドレス
-          description: ユーザーのメールアドレス
-      type: object
-      required:
-      - name
-      - email
-      title: UserCreateRequest
-    UserResponse:
-      properties:
-        id:
-          type: integer
-          title: Id
-          description: ユーザーID
-          example: 1
-        name:
-          type: string
-          title: Name
-          description: ユーザー名
-          example: 山田 太郎
-        email:
-          type: string
-          title: Email
-          description: ユーザーのメールアドレス
-          example: taro@example.com
-      type: object
-      required:
-      - id
-      - name
-      - email
-      title: UserResponse
     ValidationError:
       properties:
         loc:

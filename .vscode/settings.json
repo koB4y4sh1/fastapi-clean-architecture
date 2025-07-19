@@ -3,7 +3,7 @@
     "python.envFile": "${workspaceFolder}/api/.env",
     "python.analysis.extraPaths": ["api"],
     "python.analysis.include": ["api/**/*.py"], // api以外のディレクトリを分析対象に含めないようにし、処理負荷を軽減
-  "python.testing.pytestArgs": ["api", "--cov", "--cov-branch", "-v"],
+    "python.testing.pytestArgs": ["api", "--cov", "--cov-branch", "-v"],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true
 }
