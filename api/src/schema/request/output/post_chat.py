@@ -8,6 +8,4 @@ class ChatResponse(BaseModel):
     question: ユーザーからの質問内容を表現します。
     
     """
-
-    question: Annotated[str, Field(description="質問内容")]
-    answer: Annotated[str, Field(description="回答内容")] = None
+    message: Annotated[str, Field(description="回答内容", examples=["こんにちは！😊 今日はどんなお手伝いをしましょうか？"])] = None
