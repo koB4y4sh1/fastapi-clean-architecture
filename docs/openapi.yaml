@@ -14,7 +14,7 @@ paths:
   /api/chat:
     post:
       tags:
-      - Agent
+      - Chat
       summary: 入力された質問に対しての回答を生成する
       description: "AIに質問を送信し、回答を受け取ります。 \n\n回答は文字列で受け取ります。"
       operationId: post_chat_api_chat_post
@@ -40,7 +40,7 @@ paths:
   /api/chat/stream:
     post:
       tags:
-      - Agent
+      - Chat
       summary: 入力された質問に対しての回答を生成する(ストリーム)
       description: "AIに質問を送信し、回答を受け取ります。 \n\n回答はストリーミングで受け取ります。"
       operationId: post_chat_api_chat_stream_post
@@ -67,7 +67,36 @@ paths:
                 data: {"conetnt":"詳しく教えてください。","index":3,"finish_reason": {"type":"finished_answer"}}
 
 
+                data: [DONE]
+
+
                 '
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/mcp/github:
+    post:
+      tags:
+      - MCP
+      summary: GitHubへの質問に対しての回答を生成する
+      description: "GitHubの情報と質問内容から、AIが適した回答を生成します。 \n\n回答は文字列で受け取ります。"
+      operationId: post_mcp_github_api_mcp_github_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+        required: true
+      responses:
+        '200':
+          description: GitHubの情報が含まれた回答内容
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
         '422':
           description: Validation Error
           content:
