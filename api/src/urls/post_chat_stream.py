@@ -1,9 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 
 from src.application.chat_message_stream import chat_stream
 from src.schema.model.chat import ChatMessage, UserContent
+from src.schema.model.user import User
 from src.schema.request.input.post_chat import ChatRequest
+from src.utils.get_current_user import get_current_user
 
 router = APIRouter()
 
@@ -31,6 +33,7 @@ router = APIRouter()
 )
 async def post_chat(
     request: ChatRequest,
+    user: User = Depends(get_current_user)
 ):
     chat = ChatMessage(user=UserContent(**request.model_dump()))
     generator = chat_stream(chat)

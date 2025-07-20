@@ -32,7 +32,6 @@ def create_app() -> FastAPI:
     app.include_router(api_router, prefix=settings.API_PREFIX)
     
     # ✅ ミドルウェア登録
-    app.add_middleware(AuthMiddleware)
     app.add_middleware(LoggingMiddleware)
 
     # ✅ 例外ハンドラ登録
