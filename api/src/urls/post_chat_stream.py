@@ -35,3 +35,16 @@ async def post_chat(
     chat = ChatMessage(user=UserContent(**request.model_dump()))
     generator = chat_stream(chat)
     return StreamingResponse(generator, media_type="text/event-stream")
+    
+    # NOTE:
+    # sse-starletteのおかげでdata: や event: など自動整形対応してくれる
+    # data, event, idをdictとして持っておけば自動整形し、data, eventとして自動送信してくれる
+    # なので基本的にはFastAPIを使用している場合はEventSourceResponseを使用したほうがいい
+    # return EventSourceResponse(chat_stream())
+
+    # NOTE:
+    # なお、StreamingResponseはQuartでもできる。
+    ## return Response(genereter(), content_type="text/event-stream")
+    # ただし、Flaskはもともと１リクエスト１レスポンスに特化したものなので以下のように記載する必要がある
+    ## return Response(stream_with_context(event_stream()),content_type="text/event-stream")
+    # SSE拡張ライブラリもあるが、Redisが必要でややオーバースペック
