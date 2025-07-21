@@ -1,5 +1,6 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/api/.venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": true,
     "python.envFile": "${workspaceFolder}/api/.env",
     "python.analysis.extraPaths": ["api"],
     "python.analysis.include": ["api/**/*.py"], // api以外のディレクトリを分析対象に含めないようにし、処理負荷を軽減

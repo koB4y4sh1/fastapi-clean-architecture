@@ -18,8 +18,9 @@ async def create_mcp_pugins(plugins:list[PluginObject], model: AzureOpenAIObject
         list(MCPStdioPlugin): MCPStdioPluginインスタンスのリスト。
     """
     agents = [] # エージェントのリスト
-    servers_dir = Path(os.path.dirname(__file__)).parent.parent.joinpath('servers/worker').as_posix()
+    servers_dir = Path(os.path.dirname(__file__)).parent.parent.parent.joinpath('servers/worker').as_posix()
     
+    print(servers_dir)
     for plugin in plugins:
         if plugin.type == "MCPStdioPlugin":
             agent = MCPStdioPlugin(

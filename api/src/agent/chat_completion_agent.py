@@ -5,7 +5,6 @@ from semantic_kernel.agents import ChatCompletionAgent
 from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion, AzureChatPromptExecutionSettings
 from semantic_kernel.functions.kernel_arguments import KernelArguments
 
-from src.schema.model.chat import UserContent
 
 
 # 環境変数からAzure OpenAI設定を取得
@@ -13,7 +12,7 @@ AZURE_OPENAI_API_KEY = os.environ.get("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_ENDPOINT = os.environ.get("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_DEPLOYMENT = os.environ.get("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME")
 
-async def chat_completion_agent(message: UserContent):
+async def chat_completion_agent(message: str):
     # Kernelとサービスのセットアップ
     kernel = Kernel()
     service = AzureChatCompletion(

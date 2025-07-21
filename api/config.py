@@ -1,25 +1,25 @@
-from pydantic_settings import BaseSettings
-from typing import List, Dict
+from functools import lru_cache
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "My FastAPI App"
     API_PREFIX: str = "/api"
     VERSION: str ="1.0.0"
-    SERVERS: List[Dict[str, str]] = [
+    SERVERS: list[dict[str, str]] = [
         {"url": "http://localhost:8000", "description": "Local dev"},
         {"url": "https://api.example-dev.com", "description": "Testing"},
         {"url": "https://api.example.com", "description": "Production"},
     ]
     # 🔧 CORS関連設定
-    ALLOW_ORIGINS: List[str] = ["*"]
+    ALLOW_ORIGINS: list[str] = ["*"]
     ALLOW_CREDENTIALS: bool = True
-    ALLOW_METHODS: List[str] = ["GET", "POST", "PUT", "DELETE"]
-    ALLOW_HEADERS: List[str] = ["Content-Type","Authorization"]
+    ALLOW_METHODS: list[str] = ["GET", "POST", "PUT", "DELETE"]
+    ALLOW_HEADERS: list[str] = ["Content-Type","Authorization"]
 
     # 🔧 OpenAPIの設定
     DESCRIPTION: str = "このAPIは、ユーザー管理を行うためのAPIです。"
-    SECURITY: List[Dict[str, List[str]]] = [{"bearerAuth": []}]
-    SECURITY_SCHEMES: Dict[str, Dict[str, str]] = {
+    SECURITY: list[dict[str, list[str]]] = [{"bearerAuth": []}]
+    SECURITY_SCHEMES: dict[str, dict[str, str]] = {
         "bearerAuth": {
             "type": "http",
             "scheme": "bearer",
@@ -27,9 +27,8 @@ class Settings(BaseSettings):
             "description": "認証後にMSALから取得できるGraphAPI認証用アクセストークン"
         }
     }
-    
-    class Config:
-        env_file = ".env"
-        extra = "allow"
 
-settings = Settings()
+@lru_cache
+def get_settings():
+    """ @lru_cacheで.envの結果をキャッシュする """
+    return Settings()

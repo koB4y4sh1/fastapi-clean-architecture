@@ -9,7 +9,6 @@ def get_azure_openai_for_orchestrator():
     Returns:
         AzureOpenAIRepo: オーケストレーターで使用するAzureOpenAIの設定情報を持つモデル。
     """
-    
     return AzureOpenAIObject(
         api_key=os.getenv("AZURE_OPENAI_API_KEY"),
         endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
